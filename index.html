@@ -1,0 +1,1931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monika Gire — Full Stack Developer</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────────────────────────────────────────
+       DESIGN TOKENS
+    ───────────────────────────────────────────── */
+    :root {
+      --black:       #0a0a0a;
+      --black-soft:  #080808;
+      --card:        #111111;
+      --gold:        #c9a84c;
+      --gold-light:  #e4c76b;
+      --gold-dark:   #a07c2d;
+      --white:       #f0f0f0;
+      --gray:        #888;
+      --border:      rgba(201,168,76,.18);
+      --border-faint:rgba(201,168,76,.08);
+      --glow:        rgba(201,168,76,.18);
+      --glow-strong: rgba(201,168,76,.35);
+    }
+
+    /* ─────────────────────────────────────────────
+       RESET & BASE
+    ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+    h1,h2,h3,h4 { font-family: 'Playfair Display', serif; }
+    a { text-decoration: none; }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+    /* Selection */
+    ::selection { background: var(--gold); color: var(--black); }
+
+    /* ─────────────────────────────────────────────
+       UTILITY
+    ───────────────────────────────────────────── */
+    .gold  { color: var(--gold); }
+    .serif { font-family: 'Playfair Display', serif; }
+
+    .section-label {
+      font-size: .7rem;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      display: block;
+      margin-bottom: .5rem;
+    }
+    .section-title {
+      font-size: clamp(1.9rem, 4vw, 3.2rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.15;
+    }
+    .section-rule {
+      width: 52px;
+      height: 2px;
+      background: var(--gold);
+      margin: 1.4rem 0 2.5rem;
+    }
+    .section-rule.mx-auto { margin-left: auto; margin-right: auto; }
+
+    section { padding: 6rem 0; }
+
+    /* ─────────────────────────────────────────────
+       SCROLL REVEAL
+    ───────────────────────────────────────────── */
+    .reveal,
+    .reveal-l,
+    .reveal-r {
+      opacity: 0;
+      transition: opacity .85s cubic-bezier(.16,1,.3,1),
+                  transform .85s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal   { transform: translateY(45px); }
+    .reveal-l { transform: translateX(-60px); }
+    .reveal-r { transform: translateX(60px); }
+    .reveal.show,
+    .reveal-l.show,
+    .reveal-r.show { opacity: 1; transform: none; }
+
+    /* Staggered children */
+    .stagger .reveal { transition-delay: calc(var(--i, 0) * 110ms); }
+
+    /* ─────────────────────────────────────────────
+       NAVBAR
+    ───────────────────────────────────────────── */
+    #mainNav {
+      background: transparent;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-faint);
+      transition: background .35s;
+      padding: .9rem 0;
+      z-index: 1000;
+    }
+    #mainNav.solid { background: rgba(10,10,10,.96); }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gold) !important;
+      letter-spacing: .1em;
+      width: 44px;
+      height: 44px;
+      border: 1.5px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .3s, color .3s, box-shadow .3s;
+      flex-shrink: 0;
+    }
+    .nav-logo:hover {
+      background: var(--gold);
+      color: var(--black) !important;
+      box-shadow: 0 0 22px var(--glow-strong);
+    }
+
+    .nav-link-custom {
+      color: rgba(240,240,240,.8) !important;
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      padding: .45rem 1rem !important;
+      position: relative;
+      transition: color .3s;
+    }
+    .nav-link-custom::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 1rem;
+      right: 1rem;
+      height: 1px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform .35s ease;
+    }
+    .nav-link-custom:hover,
+    .nav-link-custom.active { color: var(--gold) !important; }
+    .nav-link-custom:hover::after,
+    .nav-link-custom.active::after { transform: scaleX(1); transform-origin: left; }
+
+    .navbar-toggler {
+      border: 1.5px solid var(--gold);
+      padding: .35rem .55rem;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23c9a84c' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    /* ─────────────────────────────────────────────
+       HERO
+    ───────────────────────────────────────────── */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* Background radial glow */
+    .hero-glow {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,168,76,.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(201,168,76,.05) 0%, transparent 60%);
+      pointer-events: none;
+      animation: heroGlowPulse 6s ease-in-out infinite;
+    }
+    @keyframes heroGlowPulse {
+      0%,100% { opacity: .6; }
+      50%      { opacity: 1; }
+    }
+
+    /* Grain overlay */
+    .hero-grain {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: .45;
+    }
+
+    /* Particle canvas */
+    #heroCanvas {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hero-inner { position: relative; z-index: 2; padding: 0 1rem; }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      font-size: .7rem;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp .8s .3s forwards;
+    }
+    .hero-tag::before,
+    .hero-tag::after {
+      content: '';
+      width: 36px;
+      height: 1px;
+      background: var(--gold);
+      opacity: .6;
+    }
+
+    .hero-name {
+      font-size: clamp(2.8rem, 10vw, 7.5rem);
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: .08em;
+      line-height: 1.05;
+      text-shadow: 0 0 80px rgba(201,168,76,.25);
+      opacity: 0;
+      animation: heroName 1.1s .6s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    @keyframes heroName {
+      from { opacity:0; letter-spacing:.25em; transform:translateY(16px); }
+      to   { opacity:1; letter-spacing:.08em; transform:none; }
+    }
+
+    .hero-typer {
+      margin: 1.6rem 0 2.8rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp .7s 1.4s forwards;
+    }
+    .hero-typer-text {
+      font-size: clamp(.9rem, 2.4vw, 1.2rem);
+      font-weight: 300;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: rgba(240,240,240,.9);
+    }
+    .typer-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: var(--gold);
+      margin-left: 3px;
+      vertical-align: middle;
+      animation: blink .75s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    .hero-cta {
+      opacity: 0;
+      animation: fadeUp .7s 2s forwards;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      opacity: 0;
+      animation: fadeUp .7s 2.6s forwards;
+    }
+    .hero-scroll span {
+      font-size: .6rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,.5);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 52px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 1.6s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%   { transform:scaleY(0); transform-origin:top;    opacity:1; }
+      50%  { transform:scaleY(1); transform-origin:top;    opacity:1; }
+      51%  { transform:scaleY(1); transform-origin:bottom; opacity:1; }
+      100% { transform:scaleY(0); transform-origin:bottom; opacity:0; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:none; }
+    }
+
+    /* ─── Gold button ──────────────────────────── */
+    .btn-gold {
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      padding: .85rem 2.8rem;
+      font-size: .78rem;
+      font-weight: 500;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1.5px solid var(--gold);
+      background: transparent;
+      cursor: pointer;
+      transition: color .35s, box-shadow .35s;
+      z-index: 0;
+    }
+    .btn-gold::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform .4s cubic-bezier(.16,1,.3,1);
+      z-index: -1;
+    }
+    .btn-gold:hover {
+      color: var(--black);
+      box-shadow: 0 0 32px var(--glow-strong);
+    }
+    .btn-gold:hover::before { transform: scaleX(1); transform-origin: left; }
+
+    /* ─────────────────────────────────────────────
+       ABOUT
+    ───────────────────────────────────────────── */
+    #about { background: var(--black); }
+
+    .photo-wrap {
+      position: relative;
+      display: inline-block;
+      max-width: 380px;
+      width: 100%;
+    }
+    .photo-box {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .photo-box i { font-size: 7rem; color: rgba(201,168,76,.15); }
+
+    /* Corner brackets */
+    .photo-wrap::before,
+    .photo-wrap::after,
+    .photo-wrap .corner-br,
+    .photo-wrap .corner-tl2 {
+      content: '';
+      position: absolute;
+      width: 36px;
+      height: 36px;
+      border-color: var(--gold);
+      border-style: solid;
+      z-index: 2;
+    }
+    .photo-wrap::before  { top:-8px;    left:-8px;    border-width:2px 0 0 2px; }
+    .photo-wrap::after   { bottom:-8px; right:-8px;   border-width:0 2px 2px 0; }
+    .photo-wrap .corner-br { bottom:-8px; left:-8px;  border-width:0 0 2px 2px; }
+    .photo-wrap .corner-tl2{ top:-8px; right:-8px;    border-width:2px 2px 0 0; }
+
+    /* Gold side accent */
+    .photo-box::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 10%; bottom: 10%;
+      width: 3px;
+      background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+      opacity: .6;
+    }
+
+    .about-bio {
+      font-size: .95rem;
+      line-height: 1.95;
+      color: rgba(240,240,240,.72);
+    }
+
+    /* Skill tags */
+    .skill-tags { display: flex; flex-wrap: wrap; gap: .55rem; }
+    .skill-tag {
+      border: 1px solid var(--border);
+      color: var(--gold);
+      padding: .28rem .85rem;
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      background: transparent;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: background .25s, color .25s, border-color .25s,
+                  opacity .4s, transform .4s;
+    }
+    .skill-tag.show { opacity:1; transform:none; }
+    .skill-tag:hover {
+      background: var(--gold);
+      color: var(--black);
+      border-color: var(--gold);
+    }
+
+    /* ─────────────────────────────────────────────
+       SERVICES
+    ───────────────────────────────────────────── */
+    #services { background: var(--black-soft); }
+
+    .svc-card {
+      background: var(--card);
+      border: 1px solid rgba(201,168,76,.09);
+      border-top: 2px solid var(--gold);
+      padding: 2.2rem 1.8rem;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      transition: transform .4s cubic-bezier(.16,1,.3,1),
+                  border-color .4s,
+                  box-shadow .4s;
+    }
+    .svc-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 120% 60% at 50% -10%, rgba(201,168,76,.07) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity .4s;
+    }
+    .svc-card:hover {
+      transform: translateY(-7px);
+      border-color: rgba(201,168,76,.4);
+      box-shadow: 0 20px 60px rgba(201,168,76,.12), 0 0 0 1px rgba(201,168,76,.18);
+    }
+    .svc-card:hover::before { opacity: 1; }
+
+    .svc-icon {
+      font-size: 2rem;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 1.3rem;
+    }
+    .svc-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: .7rem;
+    }
+    .svc-desc {
+      font-size: .85rem;
+      color: rgba(240,240,240,.55);
+      line-height: 1.8;
+    }
+
+    /* ─────────────────────────────────────────────
+       PROJECTS — media preview cards
+    ───────────────────────────────────────────── */
+    #projects { background: var(--black); }
+
+    .proj-wrap { margin-bottom: 2rem; }
+
+    /* Card container: row on desktop, column on mobile */
+    .proj-card {
+      background: var(--card);
+      border: 1px solid rgba(201,168,76,.09);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: border-color .4s, box-shadow .4s;
+    }
+    @media (min-width: 992px) {
+      .proj-card          { flex-direction: row; min-height: 320px; }
+      .proj-card.flip     { flex-direction: row-reverse; }
+    }
+    .proj-card:hover {
+      border-color: rgba(201,168,76,.28);
+      box-shadow: 0 16px 60px rgba(201,168,76,.1);
+    }
+    /* Gold side bar */
+    .proj-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--gold), var(--gold-dark));
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform .45s cubic-bezier(.16,1,.3,1);
+      z-index: 3;
+    }
+    .proj-card:hover::before { transform: scaleY(1); transform-origin: top; }
+
+    /* ── Media panel (browser mockup) ── */
+    .proj-media {
+      flex: 0 0 44%;
+      display: flex;
+      flex-direction: column;
+      background: #0c0c0c;
+      border-right: 1px solid rgba(201,168,76,.08);
+      position: relative;
+    }
+    .proj-card.flip .proj-media {
+      border-right: none;
+      border-left: 1px solid rgba(201,168,76,.08);
+    }
+    @media (max-width: 991.98px) {
+      .proj-media {
+        border-right: none !important;
+        border-left:  none !important;
+        border-bottom: 1px solid rgba(201,168,76,.08);
+        min-height: 210px;
+      }
+    }
+
+    /* Browser chrome bar */
+    .browser-bar {
+      background: #161616;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .bw-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .bw-dot.r { background: #ff5f57; }
+    .bw-dot.y { background: #febc2e; }
+    .bw-dot.g { background: #28c840; }
+    .bw-url {
+      flex: 1;
+      margin-left: 8px;
+      background: rgba(255,255,255,.04);
+      border-radius: 3px;
+      padding: 3px 9px;
+      font-size: 9.5px;
+      color: rgba(255,255,255,.28);
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    /* Reload icon */
+    .bw-reload {
+      font-size: .7rem;
+      color: rgba(255,255,255,.25);
+      cursor: default;
+      flex-shrink: 0;
+    }
+
+    /* Screen area */
+    .browser-screen {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      min-height: 180px;
+    }
+
+    /* Screenshot — place file at images/<name>.jpg */
+    .proj-screenshot {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      transition: transform .8s cubic-bezier(.16,1,.3,1);
+      z-index: 2;
+    }
+    .proj-card:hover .proj-screenshot { transform: translateY(-8%); }
+
+    /* Screen recording — place file at videos/<name>.mp4 */
+    .proj-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      z-index: 2;
+    }
+
+    /* Gradient placeholder (shown when no media present) */
+    .proj-ph {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .9rem;
+      z-index: 1;
+      transition: opacity .4s;
+    }
+    .proj-ph i    { font-size: 2.8rem; color: rgba(255,255,255,.18); }
+    .proj-ph span {
+      font-family: 'Playfair Display', serif;
+      font-size: .88rem;
+      color: rgba(255,255,255,.22);
+      letter-spacing: .1em;
+      text-align: center;
+      padding: 0 1rem;
+    }
+    /* Badge in corner of placeholder */
+    .ph-badge {
+      position: absolute;
+      bottom: 10px; right: 10px;
+      font-size: .6rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.25);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 2px 8px;
+    }
+
+    /* Video play-icon overlay */
+    .proj-play-btn {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%) scale(.8);
+      width: 54px; height: 54px;
+      border-radius: 50%;
+      background: rgba(10,10,10,.55);
+      border: 2px solid rgba(201,168,76,.55);
+      color: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 4;
+      opacity: 0;
+      transition: opacity .3s, transform .3s, box-shadow .3s;
+      backdrop-filter: blur(6px);
+      pointer-events: none;
+    }
+    .proj-media:hover .proj-play-btn {
+      opacity: 1;
+      transform: translate(-50%,-50%) scale(1);
+      box-shadow: 0 0 30px rgba(201,168,76,.3);
+    }
+
+    /* ── Text panel ── */
+    .proj-info {
+      flex: 1;
+      padding: 2rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    @media (max-width: 575.98px) { .proj-info { padding: 1.5rem 1.4rem; } }
+
+    .proj-num {
+      font-size: .67rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,.48);
+      margin-bottom: .4rem;
+    }
+    .proj-name {
+      font-size: clamp(1.35rem, 3vw, 1.9rem);
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: .7rem;
+      line-height: 1.15;
+    }
+    .role-badge {
+      display: inline-block;
+      background: rgba(201,168,76,.07);
+      border: 1px solid rgba(201,168,76,.22);
+      color: var(--gold);
+      font-size: .67rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      padding: .22rem .85rem;
+      font-weight: 500;
+      margin-bottom: 1.1rem;
+    }
+    .proj-desc {
+      font-size: .87rem;
+      color: rgba(240,240,240,.58);
+      line-height: 1.85;
+      margin-bottom: 1.2rem;
+    }
+    .tech-tags  { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:1.6rem; }
+    .tech-tag {
+      background: rgba(255,255,255,.025);
+      border: 1px solid rgba(255,255,255,.08);
+      color: rgba(240,240,240,.62);
+      padding: .16rem .62rem;
+      font-size: .69rem;
+      letter-spacing: .05em;
+    }
+
+    .btn-proj {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,.38);
+      background: transparent;
+      padding: .5rem 1.5rem;
+      font-size: .72rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: background .3s, color .3s, box-shadow .3s, border-color .3s;
+      align-self: flex-start;
+    }
+    .btn-proj:hover {
+      background: var(--gold);
+      color: var(--black);
+      box-shadow: 0 0 22px var(--glow);
+      border-color: var(--gold);
+    }
+
+    /* ─────────────────────────────────────────────
+       TECH STACK (MARQUEE)
+    ───────────────────────────────────────────── */
+    #techstack { background: var(--black-soft); overflow: hidden; }
+
+    .marquee-wrap {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+      mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+      margin-bottom: 1.2rem;
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      gap: 1rem;
+      animation: marquee 28s linear infinite;
+    }
+    .marquee-track.rev { animation-direction: reverse; animation-duration: 22s; }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .tech-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      border: 1px solid rgba(201,168,76,.25);
+      color: rgba(240,240,240,.8);
+      padding: .58rem 1.3rem;
+      font-size: .8rem;
+      white-space: nowrap;
+      letter-spacing: .05em;
+      cursor: default;
+      transition: border-color .3s, color .3s, box-shadow .3s;
+      flex-shrink: 0;
+    }
+    .tech-pill .dot {
+      width: 5px; height: 5px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .tech-pill:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      box-shadow: 0 0 14px var(--glow);
+    }
+
+    /* ─────────────────────────────────────────────
+       CONTACT
+    ───────────────────────────────────────────── */
+    #contact { background: var(--black); }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .contact-icon-box {
+      width: 46px; height: 46px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 1.05rem;
+      flex-shrink: 0;
+      transition: background .3s, border-color .3s;
+    }
+    .contact-item:hover .contact-icon-box {
+      background: rgba(201,168,76,.08);
+      border-color: rgba(201,168,76,.4);
+    }
+    .contact-meta { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gray); margin-bottom: .2rem; }
+    .contact-val  { color: var(--white); font-size: .92rem; transition: color .3s; }
+    .contact-val:hover { color: var(--gold); }
+
+    /* Form */
+    .form-lbl {
+      display: block;
+      font-size: .68rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: .55rem;
+    }
+    .field {
+      width: 100%;
+      background: #0d0d0d;
+      border: 1px solid rgba(201,168,76,.14);
+      color: var(--white);
+      padding: .9rem 1.2rem;
+      font-family: 'Inter', sans-serif;
+      font-size: .88rem;
+      outline: none;
+      border-radius: 0;
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .field::placeholder { color: rgba(240,240,240,.22); }
+    .field:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 1px rgba(201,168,76,.18), 0 0 24px rgba(201,168,76,.06);
+    }
+    textarea.field { resize: vertical; min-height: 140px; }
+
+    /* Submit button loading state */
+    .btn-gold:disabled { opacity: .6; pointer-events: none; cursor: not-allowed; }
+
+    /* Form feedback message */
+    .form-msg {
+      font-size: .82rem;
+      letter-spacing: .05em;
+      padding: .85rem 1.2rem;
+      border-left: 3px solid transparent;
+      display: none;
+      animation: fadeUp .4s ease;
+    }
+    .form-msg.success {
+      display: block;
+      color: #7dcea0;
+      background: rgba(125,206,160,.07);
+      border-color: #7dcea0;
+    }
+    .form-msg.error {
+      display: block;
+      color: #e08080;
+      background: rgba(224,128,128,.07);
+      border-color: #e08080;
+    }
+
+    /* ─────────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────────── */
+    footer {
+      background: var(--black-soft);
+      border-top: 1px solid var(--border-faint);
+      padding: 2.2rem 0;
+    }
+    .footer-copy {
+      font-size: .78rem;
+      color: rgba(240,240,240,.35);
+      letter-spacing: .06em;
+    }
+    .socials { display: flex; gap: .8rem; justify-content: flex-end; }
+    .social-btn {
+      width: 38px; height: 38px;
+      border: 1px solid rgba(201,168,76,.28);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold);
+      font-size: .95rem;
+      transition: background .3s, border-color .3s, box-shadow .3s, color .3s;
+    }
+    .social-btn:hover {
+      background: var(--gold);
+      color: var(--black);
+      border-color: var(--gold);
+      box-shadow: 0 0 18px var(--glow);
+    }
+
+    /* ─────────────────────────────────────────────
+       BACK TO TOP
+    ───────────────────────────────────────────── */
+    #btt {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      width: 40px; height: 40px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      cursor: pointer;
+      opacity: 0; pointer-events: none;
+      transition: opacity .4s, box-shadow .3s, background .3s;
+      z-index: 999;
+    }
+    #btt.show { opacity: 1; pointer-events: auto; }
+    #btt:hover { background: var(--gold); color: var(--black); box-shadow: 0 0 20px var(--glow); }
+
+    /* ─────────────────────────────────────────────
+       RESPONSIVE TWEAKS
+    ───────────────────────────────────────────── */
+    @media (max-width: 991.98px) {
+      section { padding: 4.5rem 0; }
+      .proj-card { padding: 1.8rem 1.5rem; }
+      .socials { justify-content: center; margin-top: 1rem; }
+      .footer-copy { text-align: center; }
+    }
+    @media (max-width: 767.98px) {
+      section { padding: 3.5rem 0; }
+      .photo-wrap { max-width: 260px; }
+      .hero-name   { letter-spacing: .04em; }
+    }
+    @media (max-width: 575.98px) {
+      .btn-gold { padding: .75rem 2rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ══════════════════════════════════════════════
+     NAVBAR
+════════════════════════════════════════════════ -->
+<nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+  <div class="container">
+    <a class="nav-logo" href="#home">MG</a>
+
+    <button class="navbar-toggler ms-auto" type="button"
+            data-bs-toggle="collapse" data-bs-target="#navMenu"
+            aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto gap-lg-1">
+        <li class="nav-item"><a class="nav-link-custom nav-link" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link-custom nav-link" href="#about">About</a></li>
+        <li class="nav-item"><a class="nav-link-custom nav-link" href="#services">Services</a></li>
+        <li class="nav-item"><a class="nav-link-custom nav-link" href="#projects">Projects</a></li>
+        <li class="nav-item"><a class="nav-link-custom nav-link" href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════ -->
+<section id="home">
+  <div class="hero-glow"></div>
+  <div class="hero-grain"></div>
+  <canvas id="heroCanvas"></canvas>
+
+  <div class="hero-inner">
+    <div class="hero-tag">Portfolio</div>
+
+    <h1 class="hero-name">MONIKA GIRE</h1>
+
+    <div class="hero-typer">
+      <span class="hero-typer-text" id="typerEl"></span>
+      <span class="typer-cursor"></span>
+    </div>
+
+    <div class="hero-cta">
+      <a href="#projects" class="btn-gold">View My Work</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     ABOUT
+════════════════════════════════════════════════ -->
+<section id="about">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+
+      <!-- Photo -->
+      <div class="col-lg-5 d-flex justify-content-center reveal-l">
+        <div class="photo-wrap">
+          <div class="photo-box">
+            <i class="bi bi-person"></i>
+          </div>
+          <div class="corner-br"></div>
+          <div class="corner-tl2"></div>
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div class="col-lg-7 reveal-r">
+        <span class="section-label">About Me</span>
+        <h2 class="section-title">Crafting Digital<br><em class="fst-italic" style="color:var(--gold)">Experiences</em></h2>
+        <div class="section-rule"></div>
+
+        <p class="about-bio mb-4">
+          I'm <strong style="color:var(--white);font-weight:600">Monika Gire</strong>, a passionate Full Stack Developer
+          based in Pune, Maharashtra. With expertise in the MERN stack and a sharp eye for design,
+          I craft high-performance web applications that blend elegant aesthetics with robust functionality.
+          From pixel-perfect frontends to scalable backend architectures, I turn ideas into clean,
+          efficient, production-ready code — with a relentless focus on user experience.
+        </p>
+
+        <span class="section-label mb-3 d-block">Technical Skills</span>
+        <div class="skill-tags" id="skillTags">
+          <span class="skill-tag">HTML</span>
+          <span class="skill-tag">CSS</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">Bootstrap</span>
+          <span class="skill-tag">React.js</span>
+          <span class="skill-tag">Next.js</span>
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">Express.js</span>
+          <span class="skill-tag">MongoDB</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">PHP</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">SEO</span>
+          <span class="skill-tag">Payment Integration</span>
+          <span class="skill-tag">Deployment</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SERVICES
+════════════════════════════════════════════════ -->
+<section id="services">
+  <div class="container">
+
+    <div class="text-center mb-5 reveal">
+      <span class="section-label">What I Offer</span>
+      <h2 class="section-title">What I Build</h2>
+      <div class="section-rule mx-auto"></div>
+    </div>
+
+    <div class="row g-4 stagger">
+      <div class="col-md-6 col-lg-4 reveal" style="--i:0">
+        <div class="svc-card">
+          <i class="bi bi-display svc-icon"></i>
+          <h3 class="svc-title">Frontend Development</h3>
+          <p class="svc-desc">Responsive, pixel-perfect interfaces with React.js, Next.js & Bootstrap — optimised for speed, accessibility, and cross-browser compatibility.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal" style="--i:1">
+        <div class="svc-card">
+          <i class="bi bi-stack svc-icon"></i>
+          <h3 class="svc-title">Full Stack MERN</h3>
+          <p class="svc-desc">End-to-end applications powered by MongoDB, Express.js, React.js & Node.js — scalable, secure, and production-ready from day one.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal" style="--i:2">
+        <div class="svc-card">
+          <i class="bi bi-bag-check svc-icon"></i>
+          <h3 class="svc-title">E-Commerce Platforms</h3>
+          <p class="svc-desc">Feature-rich online stores with product catalogs, advanced filtering, cart systems, and seamless checkouts that drive real conversions.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal" style="--i:3">
+        <div class="svc-card">
+          <i class="bi bi-credit-card svc-icon"></i>
+          <h3 class="svc-title">Payment Integration</h3>
+          <p class="svc-desc">Secure, reliable payment flows with Razorpay, Stripe & PayPal — tested end-to-end for smooth customer transactions.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal" style="--i:4">
+        <div class="svc-card">
+          <i class="bi bi-cloud-upload svc-icon"></i>
+          <h3 class="svc-title">Website Deployment</h3>
+          <p class="svc-desc">Deployment to Vercel, Netlify, AWS & VPS with CI/CD pipelines, SSL configuration, and domain management included.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal" style="--i:5">
+        <div class="svc-card">
+          <i class="bi bi-graph-up-arrow svc-icon"></i>
+          <h3 class="svc-title">SEO & Performance</h3>
+          <p class="svc-desc">Technical SEO audits, Core Web Vitals tuning, meta optimisation, and performance profiling for higher rankings and faster loads.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     PROJECTS
+════════════════════════════════════════════════ -->
+<!--
+  HOW TO ADD YOUR MEDIA:
+  ─────────────────────────────────────────────────────────────────
+  SCREENSHOTS  →  create folder "images/" next to index.html
+                  name files exactly as referenced below (e.g. two-brothers.jpg)
+                  Recommended size: 1280×800 px, JPG or WebP
+
+  SCREEN RECORDINGS → create folder "videos/" next to index.html
+                      name files exactly as referenced below (e.g. two-brothers.mp4)
+                      Keep under 8 MB; use H.264 MP4 for best browser support
+                      The video auto-plays silently and loops when the card is hovered
+
+  Until you add the files the gradient placeholder is shown automatically.
+  ─────────────────────────────────────────────────────────────────
+-->
+<section id="projects">
+  <div class="container">
+
+    <div class="text-center mb-5 reveal">
+      <span class="section-label">Portfolio</span>
+      <h2 class="section-title">My Work</h2>
+      <div class="section-rule mx-auto"></div>
+    </div>
+
+    <!-- ── 01 Two Brothers Inc ── -->
+    <div class="proj-wrap reveal-l">
+      <div class="proj-card">
+
+        <div class="proj-media">
+          <div class="browser-bar">
+            <span class="bw-dot r"></span><span class="bw-dot y"></span><span class="bw-dot g"></span>
+            <span class="bw-url">www.twobrothers.com</span>
+            <i class="bi bi-arrow-clockwise bw-reload"></i>
+          </div>
+          <div class="browser-screen">
+            <!-- Screenshot: add images/two-brothers.jpg -->
+            <img class="proj-screenshot" src="images/two-brothers.jpg" alt="Two Brothers Inc preview" />
+            <!-- Screen recording: add videos/two-brothers.mp4 (uncomment below) -->
+            <!-- <video class="proj-video" autoplay muted loop playsinline>
+                   <source src="videos/two-brothers.mp4" type="video/mp4">
+                 </video>
+                 <div class="proj-play-btn"><i class="bi bi-play-fill"></i></div> -->
+            <!-- Placeholder shown until media loads -->
+            <div class="proj-ph" style="background:linear-gradient(145deg,#140b00 0%,#2e1a06 60%,#1a0e00 100%)">
+              <i class="bi bi-lightbulb"></i>
+              <span>Two Brothers Inc</span>
+              <span class="ph-badge">Add screenshot</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-info">
+          <p class="proj-num">01 — E-Commerce</p>
+          <h3 class="proj-name">Two Brothers Inc</h3>
+          <span class="role-badge">Full Stack Developer</span>
+          <p class="proj-desc">A premium decorative lighting e-commerce platform built on MERN + Next.js — featuring dynamic product catalogs, smart filtering, cart functionality, and integrated payment processing for a high-end brand experience.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">MERN Stack</span><span class="tech-tag">Next.js</span>
+            <span class="tech-tag">MongoDB</span><span class="tech-tag">Express.js</span>
+            <span class="tech-tag">Payment Gateway</span>
+          </div>
+          <a href="#" class="btn-proj">Live Link <i class="bi bi-arrow-up-right"></i></a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── 02 Nofoal ── -->
+    <div class="proj-wrap reveal-r">
+      <div class="proj-card flip">
+
+        <div class="proj-media">
+          <div class="browser-bar">
+            <span class="bw-dot r"></span><span class="bw-dot y"></span><span class="bw-dot g"></span>
+            <span class="bw-url">www.nofoal.com</span>
+            <i class="bi bi-arrow-clockwise bw-reload"></i>
+          </div>
+          <div class="browser-screen">
+            <!-- Screenshot: add images/nofoal.jpg -->
+            <img class="proj-screenshot" src="images/nofoal.jpg" alt="Nofoal preview" />
+            <!-- Screen recording: add videos/nofoal.mp4 -->
+            <!-- <video class="proj-video" autoplay muted loop playsinline>
+                   <source src="videos/nofoal.mp4" type="video/mp4">
+                 </video>
+                 <div class="proj-play-btn"><i class="bi bi-play-fill"></i></div> -->
+            <div class="proj-ph" style="background:linear-gradient(145deg,#001525 0%,#08273d 60%,#001020 100%)">
+              <i class="bi bi-bag"></i>
+              <span>Nofoal</span>
+              <span class="ph-badge">Add screenshot</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-info">
+          <p class="proj-num">02 — E-Commerce</p>
+          <h3 class="proj-name">Nofoal</h3>
+          <span class="role-badge">Full Stack Developer</span>
+          <p class="proj-desc">A full-featured e-commerce platform on the MERN stack with dynamic product listings, JWT-based user authentication, order management, and a clean, intuitive shopping experience designed for conversion.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">MERN Stack</span><span class="tech-tag">React.js</span>
+            <span class="tech-tag">Node.js</span><span class="tech-tag">MongoDB</span>
+          </div>
+          <a href="#" class="btn-proj">Live Link <i class="bi bi-arrow-up-right"></i></a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── 03 Royal Polki ── -->
+    <div class="proj-wrap reveal-l">
+      <div class="proj-card">
+
+        <div class="proj-media">
+          <div class="browser-bar">
+            <span class="bw-dot r"></span><span class="bw-dot y"></span><span class="bw-dot g"></span>
+            <span class="bw-url">www.royalpolki.com</span>
+            <i class="bi bi-arrow-clockwise bw-reload"></i>
+          </div>
+          <div class="browser-screen">
+            <!-- Screenshot: add images/royal-polki.jpg -->
+            <img class="proj-screenshot" src="images/royal-polki.jpg" alt="Royal Polki preview" />
+            <!-- <video class="proj-video" autoplay muted loop playsinline>
+                   <source src="videos/royal-polki.mp4" type="video/mp4">
+                 </video>
+                 <div class="proj-play-btn"><i class="bi bi-play-fill"></i></div> -->
+            <div class="proj-ph" style="background:linear-gradient(145deg,#160022 0%,#2e0a45 60%,#120018 100%)">
+              <i class="bi bi-gem"></i>
+              <span>Royal Polki</span>
+              <span class="ph-badge">Add screenshot</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-info">
+          <p class="proj-num">03 — E-Commerce</p>
+          <h3 class="proj-name">Royal Polki</h3>
+          <span class="role-badge">Full Stack Developer</span>
+          <p class="proj-desc">An elegant jewellery e-commerce platform showcasing intricate Polki collections — with immersive product galleries, wishlists, size guides, and a secure checkout powered by the full MERN stack.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">MERN Stack</span><span class="tech-tag">React.js</span>
+            <span class="tech-tag">Express.js</span><span class="tech-tag">MongoDB</span>
+          </div>
+          <a href="#" class="btn-proj">Live Link <i class="bi bi-arrow-up-right"></i></a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── 04 Sunmach Manufacturing ── -->
+    <div class="proj-wrap reveal-r">
+      <div class="proj-card flip">
+
+        <div class="proj-media">
+          <div class="browser-bar">
+            <span class="bw-dot r"></span><span class="bw-dot y"></span><span class="bw-dot g"></span>
+            <span class="bw-url">www.sunmach.com</span>
+            <i class="bi bi-arrow-clockwise bw-reload"></i>
+          </div>
+          <div class="browser-screen">
+            <!-- Screenshot: add images/sunmach.jpg -->
+            <img class="proj-screenshot" src="images/sunmach.jpg" alt="Sunmach Manufacturing preview" />
+            <!-- <video class="proj-video" autoplay muted loop playsinline>
+                   <source src="videos/sunmach.mp4" type="video/mp4">
+                 </video>
+                 <div class="proj-play-btn"><i class="bi bi-play-fill"></i></div> -->
+            <div class="proj-ph" style="background:linear-gradient(145deg,#080f18 0%,#152030 60%,#08101a 100%)">
+              <i class="bi bi-gear"></i>
+              <span>Sunmach Manufacturing</span>
+              <span class="ph-badge">Add screenshot</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-info">
+          <p class="proj-num">04 — Corporate</p>
+          <h3 class="proj-name">Sunmach Manufacturing</h3>
+          <span class="role-badge">Frontend Developer</span>
+          <p class="proj-desc">A professional corporate website for an industrial manufacturing company — featuring product showcases, company profile, and a fully responsive layout optimised for both desktop and mobile industrial clients.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">React.js</span><span class="tech-tag">Bootstrap</span>
+            <span class="tech-tag">Responsive Design</span>
+          </div>
+          <a href="#" class="btn-proj">Live Link <i class="bi bi-arrow-up-right"></i></a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── 05 T3 Digiport ── -->
+    <div class="proj-wrap reveal-l">
+      <div class="proj-card">
+
+        <div class="proj-media">
+          <div class="browser-bar">
+            <span class="bw-dot r"></span><span class="bw-dot y"></span><span class="bw-dot g"></span>
+            <span class="bw-url">www.t3digiport.com</span>
+            <i class="bi bi-arrow-clockwise bw-reload"></i>
+          </div>
+          <div class="browser-screen">
+            <!-- Screenshot: add images/t3-digiport.jpg -->
+            <img class="proj-screenshot" src="images/t3-digiport.jpg" alt="T3 Digiport preview" />
+            <!-- <video class="proj-video" autoplay muted loop playsinline>
+                   <source src="videos/t3-digiport.mp4" type="video/mp4">
+                 </video>
+                 <div class="proj-play-btn"><i class="bi bi-play-fill"></i></div> -->
+            <div class="proj-ph" style="background:linear-gradient(145deg,#001818 0%,#082c2c 60%,#001212 100%)">
+              <i class="bi bi-code-slash"></i>
+              <span>T3 Digiport</span>
+              <span class="ph-badge">Add screenshot</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-info">
+          <p class="proj-num">05 — Digital Agency</p>
+          <h3 class="proj-name">T3 Digiport</h3>
+          <span class="role-badge">Web Developer</span>
+          <p class="proj-desc">A polished digital agency website with service showcases, portfolio display, and a PHP-powered contact form backend — crafted entirely with vanilla web technologies for maximum performance.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">HTML</span><span class="tech-tag">CSS</span>
+            <span class="tech-tag">JavaScript</span><span class="tech-tag">Bootstrap</span>
+            <span class="tech-tag">PHP</span>
+          </div>
+          <a href="#" class="btn-proj">Live Link <i class="bi bi-arrow-up-right"></i></a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── 06 Velangi Connectivity ── -->
+    <div class="proj-wrap reveal-r">
+      <div class="proj-card flip">
+
+        <div class="proj-media">
+          <div class="browser-bar">
+            <span class="bw-dot r"></span><span class="bw-dot y"></span><span class="bw-dot g"></span>
+            <span class="bw-url">www.velangi.com</span>
+            <i class="bi bi-arrow-clockwise bw-reload"></i>
+          </div>
+          <div class="browser-screen">
+            <!-- Screenshot: add images/velangi.jpg -->
+            <img class="proj-screenshot" src="images/velangi.jpg" alt="Velangi Connectivity preview" />
+            <!-- <video class="proj-video" autoplay muted loop playsinline>
+                   <source src="videos/velangi.mp4" type="video/mp4">
+                 </video>
+                 <div class="proj-play-btn"><i class="bi bi-play-fill"></i></div> -->
+            <div class="proj-ph" style="background:linear-gradient(145deg,#001a0c 0%,#082e18 60%,#001208 100%)">
+              <i class="bi bi-wifi"></i>
+              <span>Velangi Connectivity</span>
+              <span class="ph-badge">Add screenshot</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-info">
+          <p class="proj-num">06 — Connectivity</p>
+          <h3 class="proj-name">Velangi Connectivity</h3>
+          <span class="role-badge">Frontend Developer</span>
+          <p class="proj-desc">A clean, professional website for a connectivity services provider — clearly communicating plans, coverage maps, and contact channels with a layout prioritising clarity and usability.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">HTML</span><span class="tech-tag">CSS</span>
+            <span class="tech-tag">Bootstrap</span>
+          </div>
+          <a href="#" class="btn-proj">Live Link <i class="bi bi-arrow-up-right"></i></a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── 07 SGTM Treadlink ── -->
+    <div class="proj-wrap reveal-l">
+      <div class="proj-card">
+
+        <div class="proj-media">
+          <div class="browser-bar">
+            <span class="bw-dot r"></span><span class="bw-dot y"></span><span class="bw-dot g"></span>
+            <span class="bw-url">www.sgtmtreadlink.com</span>
+            <i class="bi bi-arrow-clockwise bw-reload"></i>
+          </div>
+          <div class="browser-screen">
+            <!-- Screenshot: add images/sgtm.jpg -->
+            <img class="proj-screenshot" src="images/sgtm.jpg" alt="SGTM Treadlink preview" />
+            <!-- <video class="proj-video" autoplay muted loop playsinline>
+                   <source src="videos/sgtm.mp4" type="video/mp4">
+                 </video>
+                 <div class="proj-play-btn"><i class="bi bi-play-fill"></i></div> -->
+            <div class="proj-ph" style="background:linear-gradient(145deg,#130a00 0%,#271500 60%,#100800 100%)">
+              <i class="bi bi-truck"></i>
+              <span>SGTM Treadlink</span>
+              <span class="ph-badge">Add screenshot</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-info">
+          <p class="proj-num">07 — Industrial</p>
+          <h3 class="proj-name">SGTM Treadlink</h3>
+          <span class="role-badge">Frontend Developer</span>
+          <p class="proj-desc">An SEO-optimised industrial website for a tread link manufacturer — built for search visibility and quick load times, with professional product and service presentation that speaks to B2B clients.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">HTML</span><span class="tech-tag">CSS</span>
+            <span class="tech-tag">Bootstrap</span><span class="tech-tag">SEO</span>
+          </div>
+          <a href="#" class="btn-proj">Live Link <i class="bi bi-arrow-up-right"></i></a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     TECH STACK
+════════════════════════════════════════════════ -->
+<section id="techstack">
+  <div class="container-fluid px-0">
+
+    <div class="text-center mb-5 reveal container">
+      <span class="section-label">My Toolkit</span>
+      <h2 class="section-title">Technologies I Use</h2>
+      <div class="section-rule mx-auto"></div>
+    </div>
+
+    <div class="marquee-wrap mb-3">
+      <div class="marquee-track" id="mTrack1"></div>
+    </div>
+    <div class="marquee-wrap">
+      <div class="marquee-track rev" id="mTrack2"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     CONTACT
+════════════════════════════════════════════════ -->
+<section id="contact">
+  <div class="container">
+
+    <div class="text-center mb-5 reveal">
+      <span class="section-label">Get In Touch</span>
+      <h2 class="section-title">Let's Work Together</h2>
+      <div class="section-rule mx-auto"></div>
+    </div>
+
+    <div class="row g-5">
+
+      <!-- Info -->
+      <div class="col-lg-5 reveal-l">
+        <p class="about-bio mb-4">
+          Ready to build something exceptional? Whether you have a project in mind,
+          need a consultation, or just want to say hello — I'd love to hear from you.
+        </p>
+
+        <div class="contact-item">
+          <div class="contact-icon-box"><i class="bi bi-envelope"></i></div>
+          <div>
+            <p class="contact-meta">Email</p>
+            <a href="mailto:monikagire304@gmail.com" class="contact-val d-block">monikagire304@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon-box"><i class="bi bi-telephone"></i></div>
+          <div>
+            <p class="contact-meta">Phone</p>
+            <a href="tel:+919130491314" class="contact-val d-block">+91 9130491314</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon-box"><i class="bi bi-geo-alt"></i></div>
+          <div>
+            <p class="contact-meta">Location</p>
+            <span class="contact-val">Pune, Maharashtra, India</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="col-lg-7 reveal-r">
+        <form id="contactForm" novalidate>
+          <div class="row g-4">
+
+            <div class="col-sm-6">
+              <label class="form-lbl" for="cName">Your Name</label>
+              <input class="field" type="text" id="cName" placeholder="Jane Smith" required>
+            </div>
+            <div class="col-sm-6">
+              <label class="form-lbl" for="cEmail">Email Address</label>
+              <input class="field" type="email" id="cEmail" placeholder="jane@example.com" required>
+            </div>
+            <div class="col-12">
+              <label class="form-lbl" for="cSubject">Subject</label>
+              <input class="field" type="text" id="cSubject" placeholder="Project Discussion">
+            </div>
+            <div class="col-12">
+              <label class="form-lbl" for="cMsg">Message</label>
+              <textarea class="field" id="cMsg" rows="5" placeholder="Tell me about your project…" required></textarea>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn-gold w-100" id="submitBtn">
+                <span id="btnText">Send Message</span>
+                <span id="btnSpinner" style="display:none">
+                  <span class="spinner-border spinner-border-sm me-2" role="status"></span>Sending…
+                </span>
+              </button>
+            </div>
+            <div class="col-12">
+              <div class="form-msg" id="formMsg" role="alert"></div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <p class="footer-copy">© 2025 Monika Gire. All rights reserved.</p>
+      </div>
+      <div class="col-md-6">
+        <div class="socials">
+          <a href="#" class="social-btn" title="LinkedIn"  aria-label="LinkedIn" ><i class="bi bi-linkedin"></i></a>
+          <a href="#" class="social-btn" title="GitHub"    aria-label="GitHub"   ><i class="bi bi-github"></i></a>
+          <a href="#" class="social-btn" title="Instagram" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Back to top -->
+<button id="btt" aria-label="Back to top"><i class="bi bi-chevron-up"></i></button>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* ══════════════════════════════════════════════
+   HERO CANVAS — floating gold particles
+══════════════════════════════════════════════ */
+(function () {
+  const canvas = document.getElementById('heroCanvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, dots = [];
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function mkDot() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.5 + .4,
+      vx: (Math.random() - .5) * .3,
+      vy: (Math.random() - .5) * .3,
+      a: Math.random() * .5 + .1,
+    };
+  }
+
+  function init() {
+    resize();
+    const n = Math.floor((W * H) / 14000);
+    dots = Array.from({ length: n }, mkDot);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    dots.forEach(d => {
+      d.x += d.vx; d.y += d.vy;
+      if (d.x < 0) d.x = W;
+      if (d.x > W) d.x = 0;
+      if (d.y < 0) d.y = H;
+      if (d.y > H) d.y = 0;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(201,168,76,${d.a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', () => { resize(); });
+  init();
+  draw();
+})();
+
+
+/* ══════════════════════════════════════════════
+   TYPEWRITER
+══════════════════════════════════════════════ */
+(function () {
+  const el      = document.getElementById('typerEl');
+  const phrases = ['Full Stack Developer','MERN Stack Expert','E-Commerce Builder','Deployment Specialist'];
+  let pi = 0, ci = 0, del = false;
+
+  function tick() {
+    const word = phrases[pi];
+    el.textContent = del ? word.slice(0, ci - 1) : word.slice(0, ci + 1);
+    del ? ci-- : ci++;
+
+    if (!del && ci === word.length)       { del = true;  return setTimeout(tick, 1800); }
+    if (del  && ci === 0)                 { del = false; pi = (pi + 1) % phrases.length; return setTimeout(tick, 320); }
+    setTimeout(tick, del ? 55 : 85);
+  }
+
+  setTimeout(tick, 2200);
+})();
+
+
+/* ══════════════════════════════════════════════
+   NAVBAR — solid on scroll + active link
+══════════════════════════════════════════════ */
+(function () {
+  const nav     = document.getElementById('mainNav');
+  const links   = nav.querySelectorAll('.nav-link-custom');
+  const sections= Array.from(document.querySelectorAll('section[id]'));
+
+  function onScroll() {
+    nav.classList.toggle('solid', window.scrollY > 60);
+    document.getElementById('btt').classList.toggle('show', window.scrollY > 400);
+
+    // Active link scrollspy
+    let cur = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 140) cur = s.id;
+    });
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + cur));
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+
+/* ══════════════════════════════════════════════
+   SMOOTH SCROLL + CLOSE MOBILE NAV
+══════════════════════════════════════════════ */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth' });
+    const collapse = document.getElementById('navMenu');
+    if (collapse.classList.contains('show')) {
+      bootstrap.Collapse.getOrCreateInstance(collapse).hide();
+    }
+  });
+});
+
+
+/* ══════════════════════════════════════════════
+   BACK TO TOP
+══════════════════════════════════════════════ */
+document.getElementById('btt').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+
+/* ══════════════════════════════════════════════
+   INTERSECTION OBSERVER — reveal animations
+══════════════════════════════════════════════ */
+const revObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-l, .reveal-r').forEach(el => revObs.observe(el));
+
+
+/* ══════════════════════════════════════════════
+   SKILL TAGS — staggered reveal
+══════════════════════════════════════════════ */
+const skillObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('.skill-tag').forEach((tag, i) => {
+      tag.style.transitionDelay = (i * 65) + 'ms';
+      tag.classList.add('show');
+    });
+    skillObs.unobserve(e.target);
+  });
+}, { threshold: 0.25 });
+
+const sBox = document.getElementById('skillTags');
+if (sBox) skillObs.observe(sBox);
+
+
+/* ══════════════════════════════════════════════
+   MARQUEE — build & populate
+══════════════════════════════════════════════ */
+(function () {
+  const tech = [
+    { n:'HTML5',       i:'bi-filetype-html' },
+    { n:'CSS3',        i:'bi-filetype-css'  },
+    { n:'JavaScript',  i:'bi-filetype-js'   },
+    { n:'Bootstrap',   i:'bi-bootstrap'     },
+    { n:'React.js',    i:'bi-code-slash'    },
+    { n:'Next.js',     i:'bi-arrow-right-circle' },
+    { n:'Node.js',     i:'bi-server'        },
+    { n:'Express.js',  i:'bi-layers'        },
+    { n:'MongoDB',     i:'bi-database'      },
+    { n:'SQL',         i:'bi-table'         },
+    { n:'PHP',         i:'bi-filetype-php'  },
+    { n:'Git',         i:'bi-git'           },
+    { n:'GitHub',      i:'bi-github'        },
+    { n:'SEO',         i:'bi-search'        },
+    { n:'Figma',       i:'bi-vector-pen'    },
+  ];
+
+  function pill(t) {
+    return `<div class="tech-pill"><span class="dot"></span><i class="bi ${t.i}"></i> ${t.n}</div>`;
+  }
+
+  function fill(id, items) {
+    const el  = document.getElementById(id);
+    const set = [...items, ...items]; // duplicate for seamless loop
+    el.innerHTML = set.map(pill).join('');
+  }
+
+  fill('mTrack1', tech);
+  fill('mTrack2', [...tech].reverse());
+})();
+
+
+/* ══════════════════════════════════════════════
+   PROJECT MEDIA — screenshot / video handling
+══════════════════════════════════════════════ */
+(function () {
+  // Screenshots: hide placeholder when image loads; hide img when it errors
+  document.querySelectorAll('.proj-screenshot').forEach(img => {
+    const ph = img.closest('.browser-screen').querySelector('.proj-ph');
+
+    function onLoad()  { if (ph) ph.style.display = 'none'; }
+    function onError() { img.style.display = 'none'; }
+
+    if (img.complete) {
+      img.naturalWidth > 0 ? onLoad() : onError();
+    } else {
+      img.addEventListener('load',  onLoad);
+      img.addEventListener('error', onError);
+    }
+  });
+
+  // Screen recordings: hide placeholder when video has data; hide video on error
+  document.querySelectorAll('.proj-video').forEach(vid => {
+    const ph  = vid.closest('.browser-screen').querySelector('.proj-ph');
+    const btn = vid.closest('.proj-media').querySelector('.proj-play-btn');
+
+    function onData()  { if (ph) ph.style.display = 'none'; if (btn) btn.style.display = 'flex'; }
+    function onError() { vid.style.display = 'none'; if (btn) btn.style.display = 'none'; }
+
+    if (vid.readyState >= 2) onData();
+    vid.addEventListener('loadeddata', onData);
+    vid.addEventListener('error', onError);
+  });
+
+  // Hover-to-play for screen recording cards
+  document.querySelectorAll('.proj-card').forEach(card => {
+    const vid = card.querySelector('.proj-video');
+    if (!vid) return;
+    card.addEventListener('mouseenter', () => vid.play().catch(() => {}));
+    card.addEventListener('mouseleave', () => { vid.pause(); vid.currentTime = 0; });
+  });
+})();
+
+/* ══════════════════════════════════════════════
+   CONTACT FORM — Google Sheets integration
+   ─────────────────────────────────────────────
+   SETUP (one-time, ~3 minutes):
+   1. Open your Google Sheet → Extensions → Apps Script
+   2. Paste the Apps Script code (see comment block below)
+   3. Click Deploy → New deployment → Web app
+      Execute as: Me | Who has access: Anyone  → Deploy
+   4. Copy the web app URL and paste it as SCRIPT_URL below
+   ─────────────────────────────────────────────
+   APPS SCRIPT CODE TO PASTE:
+   ─────────────────────────────────────────────
+   function doPost(e) {
+     try {
+       var ss    = SpreadsheetApp.getActiveSpreadsheet();
+       var sheet = ss.getSheetByName('Contact Submissions');
+       if (!sheet) {
+         sheet = ss.insertSheet('Contact Submissions');
+         sheet.appendRow(['Timestamp','Name','Email','Subject','Message']);
+         var hdr = sheet.getRange(1,1,1,5);
+         hdr.setFontWeight('bold');
+         hdr.setBackground('#c9a84c');
+         hdr.setFontColor('#000000');
+         sheet.setFrozenRows(1);
+       }
+       var data = JSON.parse(e.postData.contents);
+       sheet.appendRow([
+         new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'}),
+         data.name    || '',
+         data.email   || '',
+         data.subject || '',
+         data.message || ''
+       ]);
+       sheet.autoResizeColumns(1,5);
+       return ContentService
+         .createTextOutput(JSON.stringify({success:true}))
+         .setMimeType(ContentService.MimeType.JSON);
+     } catch(err) {
+       return ContentService
+         .createTextOutput(JSON.stringify({success:false,error:err.message}))
+         .setMimeType(ContentService.MimeType.JSON);
+     }
+   }
+   ─────────────────────────────────────────────
+══════════════════════════════════════════════ */
+(function () {
+  /* ← PASTE YOUR DEPLOYED WEB APP URL HERE */
+  const SCRIPT_URL = 'PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE';
+
+  const form    = document.getElementById('contactForm');
+  const btn     = document.getElementById('submitBtn');
+  const btnText = document.getElementById('btnText');
+  const spinner = document.getElementById('btnSpinner');
+  const msgBox  = document.getElementById('formMsg');
+
+  function setLoading(on) {
+    btn.disabled    = on;
+    btnText.style.display  = on ? 'none'   : 'inline';
+    spinner.style.display  = on ? 'inline' : 'none';
+  }
+
+  function showMsg(type, text) {
+    msgBox.textContent = text;
+    msgBox.className   = 'form-msg ' + type;
+    msgBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function clearMsg() {
+    msgBox.textContent = '';
+    msgBox.className   = 'form-msg';
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    clearMsg();
+
+    const name    = document.getElementById('cName').value.trim();
+    const email   = document.getElementById('cEmail').value.trim();
+    const subject = document.getElementById('cSubject').value.trim();
+    const message = document.getElementById('cMsg').value.trim();
+
+    /* Basic validation */
+    if (!name)    return showMsg('error', 'Please enter your name.');
+    if (!email || !/\S+@\S+\.\S+/.test(email))
+                  return showMsg('error', 'Please enter a valid email address.');
+    if (!message) return showMsg('error', 'Please write a message before sending.');
+
+    /* Guard: URL not configured yet */
+    if (SCRIPT_URL === 'PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE') {
+      return showMsg('error',
+        'Form not connected yet. Please email monikagire304@gmail.com directly.');
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method : 'POST',
+        /* text/plain avoids CORS preflight; Apps Script reads via e.postData.contents */
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body   : JSON.stringify({ name, email, subject, message })
+      });
+
+      const json = await res.json();
+
+      if (json.success) {
+        showMsg('success', '✓ Message received! I\'ll get back to you within 24 hours.');
+        form.reset();
+      } else {
+        throw new Error(json.error || 'Server error');
+      }
+    } catch (err) {
+      showMsg('error',
+        'Something went wrong. Please email monikagire304@gmail.com directly.');
+      console.error('[ContactForm]', err);
+    } finally {
+      setLoading(false);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
